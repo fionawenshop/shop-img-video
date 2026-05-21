@@ -521,7 +521,7 @@ function renderProducts(){
 function openModal(idx){
     const [name, medias] = currentPageProducts[idx];
     const content = document.getElementById('modalContent');
-    content.innerHTML = `<h2 style="color:#fff;text-align:center;margin-bottom:20px">${name}</h2>`;
+    content.innerHTML = `<h2 style="color:#fff;text-align:center;margin:0 0 10px 0;padding:0;font-size:18px">${name}</h2>`;
 
     medias.forEach(m => {
         if(m.mimeType.includes('video')){
@@ -529,22 +529,27 @@ function openModal(idx){
             
             if (m.name.startsWith('http')) {
                 videoHtml = `
-                <div class="video-wrapper">
-                    <video controls controlsList="nodownload" playsinline style="width:100%;border-radius:8px">
+                <div style="width:100%;margin:0;padding:0;">
+                    <video 
+                        controls 
+                        controlsList="nodownload" 
+                        playsinline
+                        style="width:100%;height:auto;display:block;margin:0;padding:0;border-radius:6px"
+                    >
                         <source src="${m.name}" type="video/mp4">
                     </video>
                 </div>`;
             } 
             else if (m.isImgur) {
                 videoHtml = `
-                <div class="video-wrapper">
-                    <iframe src="https://imgur.com/${m.id}/embed?pub=true" scrolling="no" frameborder="0" allow="fullscreen" allowfullscreen></iframe>
+                <div style="width:100%;margin:0;padding:0;">
+                    <iframe src="https://imgur.com/${m.id}/embed?pub=true" scrolling="no" frameborder="0" allow="fullscreen" allowfullscreen style="width:100%;margin:0;"></iframe>
                 </div>`;
             } 
             else {
                 videoHtml = `
-                <div class="video-wrapper">
-                    <iframe src="https://drive.google.com/file/d/${m.id}/preview?autoplay=0&rel=0" allow="autoplay" allowfullscreen></iframe>
+                <div style="width:100%;margin:0;padding:0;">
+                    <iframe src="https://drive.google.com/file/d/${m.id}/preview?autoplay=0&rel=0" allow="autoplay" allowfullscreen style="width:100%;margin:0;"></iframe>
                 </div>`;
             }
             
@@ -566,15 +571,14 @@ function openModal(idx){
             }
 
             content.innerHTML += `
-            <div class="modal-media">
-                <img src="${imgSrc}" alt="${name}" style="width:100%;border-radius:8px">
+            <div style="margin:8px 0 0 0;padding:0;">
+                <img src="${imgSrc}" alt="${name}" style="width:100%;border-radius:6px;margin:0;">
             </div>`;
         }
     });
 
     document.getElementById('modal').style.display = 'block';
 }
-
 function closeModal(){
     document.getElementById('modal').style.display = 'none';
     document.getElementById('modalContent').innerHTML = '';
