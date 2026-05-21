@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>FionaWen</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Arial,sans-serif;background:#fff}
+.container{max-width:1000px;margin:0 auto;padding:20px}
+.main-title{text-align:center;font-size:28px;margin:30px 0;color:#222}
+
+.product{margin-bottom:50px;padding-bottom:20px;border-bottom:1px solid #eee}
+.product-title{
+    text-align:center;
+    font-size:18px;
+    margin:15px 0;
+    color:#000;
+    cursor:pointer;
+    font-weight:bold;
+    text-decoration:underline;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+}
+.grid-item{
+    aspect-ratio:1;
+    background:#000;
+    border-radius:6px;
+    overflow:hidden;
+    position:relative;
+    cursor:pointer;
+}
+.grid-item img{
+    width:100%;height:100%;object-fit:cover
+}
+.grid-item .more{
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,0.6);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:26px;
+    font-weight:bold;
+}
+
+.modal{
+    display:none;
+    position:fixed;
+    top:0;left:0;
+    width:100%;height:100%;
+    background:rgba(0,0,0,0.95);
+    z-index:9999;
+    padding:10px;
+    overflow-y:auto;
+}
+.modal-close{
+    position:fixed;
+    top:15px;right:15px;
+    color:#fff;
+    font-size:36px;
+    cursor:pointer;
+    z-index:9999
+}
+.modal-content{
+    max-width:500px;
+    margin:40px auto;
+}
+.modal-media{
+    margin-bottom:12px;
+    border-radius:8px;
+    overflow:hidden;
+    background:#000;
+    width:100%;
+}
+.modal-media img{
+    width:100%;
+    height:auto;
+    display:block;
+}
+
+/* 竖屏 9:16 手机专用 */
+.video-wrapper {
+    position: relative;
+    width: 100%;
+    padding-top: 177.77%;
+    background: #000;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom:12px;
+}
+.video-wrapper iframe {
+    position: absolute;
+    top:0; left:0;
+    width:100%; height:100%;
+    border:none;
+}
+
+.pagination{
+    text-align:center;
+    margin:40px 0;
+}
+.pagination button{
+    padding: 10px 20px;
+    font-size:15px;
+    margin:0 8px;
+    border:none;
+    background:#222;
+    color:#fff;
+    border-radius:8px;
+    cursor:pointer;
+}
+.pagination button:disabled{
+    background:#ccc;
+}
+#pageInfo{
+    font-size:16px;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+    <!-- CTA 引导 -->
+<p class="social-cta">
+  Wholesale - Contact us instantly 👇
+</p>
+
+<!-- 社媒按钮 -->
+<div class="social-bar">
+
+  <!-- WhatsApp -->
+  <a href="https://wa.me/message/44E5ERX6L7IDG1" target="_blank" class="social-item whatsapp">
+    <svg viewBox="0 0 32 32">
+      <path d="M19.11 17.2c-.27-.14-1.6-.79-1.85-.88-.25-.09-.43-.14-.61.14-.18.27-.7.88-.86 1.06-.16.18-.32.2-.59.07-.27-.14-1.15-.42-2.19-1.34-.81-.72-1.36-1.6-1.52-1.87-.16-.27-.02-.42.12-.56.12-.12.27-.32.41-.48.14-.16.18-.27.27-.45.09-.18.05-.34-.02-.48-.07-.14-.61-1.47-.84-2.01-.22-.53-.45-.46-.61-.47-.16-.01-.34-.01-.52-.01-.18 0-.48.07-.73.34-.25.27-.95.93-.95 2.27 0 1.34.97 2.64 1.11 2.82.14.18 1.91 2.92 4.64 4.09.65.28 1.16.45 1.56.58.66.21 1.27.18 1.75.11.53-.08 1.6-.65 1.83-1.28.23-.63.23-1.17.16-1.28-.07-.11-.25-.18-.52-.32z"/>
+    </svg>
+    <span>WhatsApp</span>
+  </a>
+
+  <!-- Instagram -->
+  <a href="https://www.instagram.com/fionawen_shop" target="_blank" class="social-item instagram">
+    <svg viewBox="0 0 24 24">
+      <path d="M7 2C4.24 2 2 4.24 2 7v10c0 2.76 2.24 5 5 5h10c2.76 0 5-2.24 5-5V7c0-2.76-2.24-5-5-5H7zm5 4.5A5.5 5.5 0 1 1 6.5 12 5.5 5.5 0 0 1 12 6.5zm6-.9a1.3 1.3 0 1 1-1.3-1.3A1.3 1.3 0 0 1 18 5.6z"/>
+    </svg>
+    <span>Instagram</span>
+  </a>
+
+  <!-- TikTok -->
+  <a href="https://www.tiktok.com/@fionawen_shop" target="_blank" class="social-item tiktok">
+    <svg viewBox="0 0 24 24">
+      <path d="M21 8.5a6.5 6.5 0 0 1-4-1.4v5.9a4.9 4.9 0 1 1-4.9-4.9v2.3a2.6 2.6 0 1 0 1.9 2.5V2h2.5a4.5 4.5 0 0 0 4 4v2.5z"/>
+    </svg>
+    <span>TikTok</span>
+  </a>
+
+</div>
+
+<style>
+/* CTA —— 放大成标题级 */
+.social-cta {
+  text-align: center;
+  font-size: 20px;     /* 👈 原来17 → 20 */
+  font-weight: 700;
+  margin: 18px 0 14px;
+  color: #111;
+  line-height: 1.4;
+}
+
+/* 整行 */
+.social-bar {
+  display: flex;
+  width: 100%;
+}
+
+/* 按钮（核心放大） */
+.social-item {
+  flex: 1;
+  height: 160px;       /* 👈 再加高 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: #fff;
+  font-size: 17px;     /* 👈 字更大 */
+  font-weight: 700;
+  gap: 12px;
+}
+
+/* 图标（核心放大） */
+.social-item svg {
+  width: 64px;         /* 👈 大幅增加 */
+  height: 64px;
+  fill: #fff;
+}
+
+/* 品牌色 */
+.whatsapp {
+  background: #25D366;
+}
+
+.instagram {
+  background: radial-gradient(circle at 30% 107%, 
+    #fdf497 0%, #fdf497 5%, 
+    #fd5949 45%, #d6249f 60%, 
+    #285AEB 90%);
+}
+
+.tiktok {
+  background: #000;
+}
+
+/* 点击反馈 */
+.social-item:active {
+  transform: scale(0.96);
+}
+
+/* 手机端：再极限放大 */
+@media (max-width: 768px) {
+  .social-item {
+    height: 140px;     /* 👈 接近极限 */
+  }
+
+  .social-item svg {
+    width: 72px;
+    height: 72px;
+  }
+
+  .social-item span {
+    font-size: 18px;
+  }
+
+  .social-cta {
+    font-size: 22px;
+  }
+}
+</style>
+    <div id="productList"></div>
+
+    <div class="pagination">
+        <button id="prev">Previous</button>
+        <span id="pageInfo">Page 1 / 0</span>
+        <button id="next">Next</button>
+    </div>
+</div>
+
+<div class="modal" id="modal">
+    <div class="modal-close" onclick="closeModal()">×</div>
+    <div class="modal-content" id="modalContent"></div>
+</div>
+
+<script>
+const allProducts = [
+    ["Sleeveless Contrast Midi Dress", [
+    {"id": "kmxFAtv", "name": "Sleeveless-Contrast-Midi-Dress-1.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "LMrVkfR", "name": "Sleeveless-Contrast-Midi-Dress-2.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "fNYXotb", "name": "Sleeveless-Contrast-Midi-Dress-3.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "UtFlCax", "name": "Sleeveless-Contrast-Midi-Dress-4.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "R9pe5ix", "name": "Sleeveless-Contrast-Midi-Dress-5.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "MwaWDks", "name": "Sleeveless-Contrast-Midi-Dress-6.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "jFLY2Y0", "name": "Sleeveless-Contrast-Midi-Dress-7.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "tnSFLF2", "name": "Sleeveless-Contrast-Midi-Dress-8.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "fNsypNh", "name": "Sleeveless-Contrast-Midi-Dress-9.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "Ff6k6oZ", "name": "Sleeveless-Contrast-Midi-Dress-10.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "wOcDYKm", "name": "Sleeveless-Contrast-Midi-Dress-11.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "4i82cuo", "name": "Sleeveless-Contrast-Midi-Dress-12.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "MKHxwtL", "name": "Sleeveless-Contrast-Midi-Dress-13.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "4R3xqeY", "name": "Sleeveless-Contrast-Midi-Dress-14.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "UJM0g2U", "name": "Sleeveless-Contrast-Midi-Dress-15.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "qVUp9Dm", "name": "Sleeveless-Contrast-Midi-Dress-16.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "2q8yubg", "name": "Sleeveless-Contrast-Midi-Dress-17.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "nzrcU5z", "name": "Sleeveless-Contrast-Midi-Dress-18.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "OkvAuHP", "name": "Sleeveless-Contrast-Midi-Dress-19.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "TqcGiJ9", "name": "Sleeveless-Contrast-Midi-Dress-20.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "NN1DNZn", "name": "Sleeveless-Contrast-Midi-Dress-21.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "hlS93QK", "name": "Sleeveless-Contrast-Midi-Dress-22.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "yBPNyXY", "name": "Sleeveless-Contrast-Midi-Dress-23.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "fnKJTrI", "name": "Sleeveless-Contrast-Midi-Dress-24.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "kQgRpIR", "name": "Sleeveless-Contrast-Midi-Dress-25.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "6hsUB2P", "name": "Sleeveless-Contrast-Midi-Dress-26.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "J09Nxlr", "name": "Sleeveless-Contrast-Midi-Dress-27.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "e37es8m", "name": "Sleeveless-Contrast-Midi-Dress-28.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "E5XxL0E", "name": "Sleeveless-Contrast-Midi-Dress-29.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "rzv9Cth", "name": "Sleeveless-Contrast-Midi-Dress-30.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "lqHC9ZF", "name": "Sleeveless-Contrast-Midi-Dress-31.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "0RaJD67", "name": "Sleeveless-Contrast-Midi-Dress-32.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "C4a5jCK", "name": "Sleeveless-Contrast-Midi-Dress-33.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "Ojea6Jh", "name": "Sleeveless-Contrast-Midi-Dress-34.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "cSYN1iB", "name": "Sleeveless-Contrast-Midi-Dress-35.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "tXPjJo0", "name": "Sleeveless-Contrast-Midi-Dress-36.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "ZClkFOQ", "name": "Sleeveless-Contrast-Midi-Dress-37.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "4r3b5Wd", "name": "Sleeveless-Contrast-Midi-Dress-38.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "gTg408o", "name": "Sleeveless-Contrast-Midi-Dress-39.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "jGxaic8", "name": "Sleeveless-Contrast-Midi-Dress-40.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "f6xw0EX", "name": "Sleeveless-Contrast-Midi-Dress-41.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "YYlGkiD", "name": "Sleeveless-Contrast-Midi-Dress-42.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "3VI8vCt", "name": "Sleeveless-Contrast-Midi-Dress-43.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "h78v88U", "name": "Sleeveless-Contrast-Midi-Dress-44.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "ktKpoFY", "name": "Sleeveless-Contrast-Midi-Dress-45.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "1l0jqGk", "name": "Sleeveless-Contrast-Midi-Dress-46.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "eB0PAoO", "name": "Sleeveless-Contrast-Midi-Dress-47.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "0zaZZ4m", "name": "Sleeveless-Contrast-Midi-Dress-48.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "k71wWFN", "name": "Sleeveless-Contrast-Midi-Dress-49.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "LpHIjWk", "name": "Sleeveless-Contrast-Midi-Dress-50.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "RBiJLHu", "name": "Sleeveless-Contrast-Midi-Dress-51.mp4", "mimeType": "video/mp4", "isImgur": true},
+    {"id": "Fx7dHBq", "name": "Sleeveless-Contrast-Midi-Dress-52.mp4", "mimeType": "video/mp4", "isImgur": true},
+    {"id": "YUrBQet", "name": "Sleeveless-Contrast-Midi-Dress-53.mp4", "mimeType": "video/mp4", "isImgur": true},
+    {"id": "xxjyBwl", "name": "Sleeveless-Contrast-Midi-Dress-54.mp4", "mimeType": "video/mp4", "isImgur": true},
+    {"id": "9WpcWeQ", "name": "Sleeveless-Contrast-Midi-Dress-55.mp4", "mimeType": "video/mp4", "isImgur": true}
+]],
+["Formal Gradient Rhinestone Embellished Waist Tie Maxi Dress", [
+    {"id": "UFyiKIZ", "name": "Formal-Gradient-Rhinestone-Embellished-Waist-Tie-Maxi-Dress-1.jpg", "mimeType": "image/jpeg", "isImgur": true},
+    {"id": "GWjyULy", "name": "Formal-Gradient-Rhinestone-Embellished-Waist-Tie-Maxi-Dress-2.jpg", "mimeType": "image/jpeg", "isImgur": true}
+]],
+["Solid Color Sweetheart Neck Flowy Chiffon Dress", [{"id": "1NjItoT-NzUstQFXJHJdrNE9gdAAUkNsA", "name": "Solid-Color-Sweetheart-Neck-Flowy-Chiffon-Dress-1.jpg", "mimeType": "image/jpeg"}, {"id": "1DuKYn4RLoXKyWJ6hpYXj9STnZcGOb_j-", "name": "Solid-Color-Sweetheart-Neck-Flowy-Chiffon-Dress-3.jpg", "mimeType": "image/jpeg"}, {"id": "1tKdojzxml2Yv5OTLYkmlK3nL1oNxHggW", "name": "Solid-Color-Sweetheart-Neck-Flowy-Chiffon-Dress-6.jpg", "mimeType": "image/jpeg"}, {"id": "1Gy21np7817e-oBUrxl76ypyuxVedD_j-", "name": "Solid-Color-Sweetheart-Neck-Flowy-Chiffon-Dress-4.jpg", "mimeType": "image/jpeg"}, {"id": "1LJ85FRDKBLJdpQka_gal2beSaj6IzH-z", "name": "Solid-Color-Sweetheart-Neck-Flowy-Chiffon-Dress-5.jpg", "mimeType": "image/jpeg"}, {"id": "1SYbFNJv_COVmuQ8UgG4m6M92Vv2oupVD", "name": "Solid-Color-Sweetheart-Neck-Flowy-Chiffon-Dress-2.jpg", "mimeType": "image/jpeg"}]],["Round Neck Cap Sleeve Tiered Ruffle Maxi Dress", [{"id": "1-_5bvCwA0buoVIB8g7zicrvosJ8wmNUR", "name": "Round-Neck-Cap-Sleeve-Tiered-Ruffle-Maxi-Dress-8.jpg", "mimeType": "image/jpeg"}, {"id": "1xKiZAeF6w2-O9enw_dPchAL9uFvGEbRo", "name": "Round-Neck-Cap-Sleeve-Tiered-Ruffle-Maxi-Dress-3.jpg", "mimeType": "image/jpeg"}, {"id": "1iM0FBGMngEOGhkTf8RPq545USv3f-qh6", "name": "Round-Neck-Cap-Sleeve-Tiered-Ruffle-Maxi-Dress-5.jpg", "mimeType": "image/jpeg"}, {"id": "1OIf1oQpjVWbuqApPgKyINC6KLN4bZYNJ", "name": "Round-Neck-Cap-Sleeve-Tiered-Ruffle-Maxi-Dress-6.jpg", "mimeType": "image/jpeg"}, {"id": "1Aduum8M9V1IoDcIJRhlhSD7Up6fNTmfy", "name": "Round-Neck-Cap-Sleeve-Tiered-Ruffle-Maxi-Dress-11.jpg", "mimeType": "image/jpeg"}, {"id": "1zy8uF1LjgGlQh2XI6A-NAkaPWxzk724y", "name": "Round-Neck-Cap-Sleeve-Tiered-Ruffle-Maxi-Dress-9.jpg", "mimeType": "image/jpeg"}, {"id": "1TydBjLP3RkbdIdIo0WOI7_aRyEOAB1nL", "name": "Round-Neck-Cap-Sleeve-Tiered-Ruffle-Maxi-Dress-4.jpg", "mimeType": "image/jpeg"}, {"id": "14sPPfSk65Dak4xtJSRwQnDNY9thXD3yc", "name": "Round-Neck-Cap-Sleeve-Tiered-Ruffle-Maxi-Dress-7.jpg", "mimeType": "image/jpeg"}, {"id": "1_Q5ehkBzc9rjp5hnmtjpk_7DvMOw0DgT", "name": "Round-Neck-Cap-Sleeve-Tiered-Ruffle-Maxi-Dress-2.jpg", "mimeType": "image/jpeg"}, {"id": "1wivIloymIqiWtexBKyKUWqFpu7x9-BL4", "name": "Round-Neck-Cap-Sleeve-Tiered-Ruffle-Maxi-Dress-12.jpg", "mimeType": "image/jpeg"}, {"id": "1DYXXnXGAw5LTSbTUghZbIbBX8UD4OYYO", "name": "Round-Neck-Cap-Sleeve-Tiered-Ruffle-Maxi-Dress-13.jpg", "mimeType": "image/jpeg"}, {"id": "1u1PDElRfBshAzRnSFvjdaPhPaCxCZqng", "name": "Round-Neck-Cap-Sleeve-Tiered-Ruffle-Maxi-Dress-10.jpg", "mimeType": "image/jpeg"}, {"id": "1VkcCVx4CHxnK-OQKtwhSVcUUzJJhZHxj", "name": "Round-Neck-Cap-Sleeve-Tiered-Ruffle-Maxi-Dress-1.jpg", "mimeType": "image/jpeg"}]],
+]
+const perPage = 10;
+let currentPage = 1;
+let currentPageProducts = [];
+
+function renderProducts(){
+    const container = document.getElementById('productList');
+    container.innerHTML = '';
+    
+    const start = (currentPage-1)*perPage;
+    const end = currentPage*perPage;
+    currentPageProducts = allProducts.slice(start, end);
+    
+    currentPageProducts.forEach((item, idx) => {
+        const [prodName, medias] = item;
+        let gridHTML = '';
+        const showItems = medias.slice(0,9);
+        const extraCount = medias.length - 9;
+
+        showItems.forEach((m, idx2) => {
+            if (!m.mimeType.includes('video')) {
+                gridHTML += `
+<div class="grid-item" onclick="openModal(${idx})">
+    ${m.isImgur 
+        ? `<img 
+            src="https://i.imgur.com/${m.id}.jpg" 
+            alt="${prodName}" 
+            loading="lazy" 
+            width="800" height="800">`
+        : `<img 
+            src="https://lh3.googleusercontent.com/d/${m.id}" 
+            alt="${prodName}" 
+            loading="lazy" 
+            width="800" height="800">`
+    }
+    ${extraCount > 0 && idx2 === 8 ? '<div class="more">+'+extraCount+'</div>' : ''}
+</div>`;
+            }
+        });
+
+        container.innerHTML += `
+        <div class="product">
+            <div class="product-title" onclick="openModal(${idx})">${prodName}</div>
+            <div class="grid">${gridHTML}</div>
+        </div>`;
+    });
+
+    document.getElementById('pageInfo').innerText = `Page ${currentPage} / ${Math.ceil(allProducts.length / perPage)}`;
+    document.getElementById('prev').disabled = currentPage === 1;
+    document.getElementById('next').disabled = currentPage === Math.ceil(allProducts.length/perPage);
+}
+
+function openModal(idx){
+    const [name, medias] = currentPageProducts[idx];
+    const content = document.getElementById('modalContent');
+    content.innerHTML = `<h2 style="color:#fff;text-align:center;margin-bottom:20px">${name}</h2>`;
+
+ medias.forEach(m => {
+    if(m.mimeType.includes('video')){
+        // 自动区分 Imgur 视频 / Google Drive 视频
+        let videoHtml = '';
+        
+        // ===== Imgur 视频 =====
+        if (m.isImgur) {
+            videoHtml = `
+            <div class="video-wrapper">
+                <iframe 
+                    src="https://imgur.com/${m.id}/embed?pub=true" 
+                    scrolling="no"
+                    frameborder="0"
+                    allow="fullscreen"
+                    allowfullscreen>
+                </iframe>
+            </div>`;
+        }
+        
+        // ===== Google Drive 视频 =====
+        else {
+            videoHtml = `
+            <div class="video-wrapper">
+                <iframe 
+                    src="https://drive.google.com/file/d/${m.id}/preview?autoplay=0&rel=0" 
+                    allow="autoplay"
+                    allowfullscreen>
+                </iframe>
+            </div>`;
+        }
+
+        content.innerHTML += videoHtml;
+    }
+});
+
+    medias.forEach(m => {
+        if(!m.mimeType.includes('video')){
+            content.innerHTML += `
+<div class="modal-media">
+    ${m.isImgur 
+        ? `<img 
+            src="https://i.imgur.com/${m.id}.jpg" 
+            alt="${name}">`
+        : `<img 
+            src="https://lh3.googleusercontent.com/d/${m.id}" 
+            alt="${name}">`
+    }
+</div>`;
+        }
+    });
+
+    document.getElementById('modal').style.display = 'block';
+}
+
+function closeModal(){
+    document.getElementById('modal').style.display = 'none';
+    document.getElementById('modalContent').innerHTML = '';
+}
+
+document.getElementById('prev').onclick = () => {
+    if(currentPage>1){
+        currentPage--;
+        renderProducts();
+        window.scrollTo({top:0, behavior:'smooth'});
+    }
+}
+document.getElementById('next').onclick = () => {
+    if(currentPage<Math.ceil(allProducts.length/perPage)){
+        currentPage++;
+        renderProducts();
+        window.scrollTo({top:0, behavior:'smooth'});
+    }
+}
+
+renderProducts();
+</script>
+</body>
+</html>
