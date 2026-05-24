@@ -1,0 +1,14 @@
+def convert_github_to_jsdelivr(url):
+    # 正确转换公式：自动删除 /main/
+    url = url.replace("https://github.com/", "https://cdn.jsdelivr.net/gh/")
+    url = url.replace("/blob/main/", "/")  # 关键修复
+    url = url.replace("/blob/master/", "/")
+    
+    ext = url.split(".")[-1].lower()
+    mimeType = "video/mp4" if ext == "mp4" else "image/jpeg"
+    
+    return f'{{"name": "{url}", "mimeType": "{mimeType}"}}'
+
+# 控制台输入 GitHub 链接
+github_url = input("GitHub URL: ").strip()
+print("\n" + convert_github_to_jsdelivr(github_url))
