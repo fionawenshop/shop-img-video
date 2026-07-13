@@ -1,62 +1,94 @@
 import os
+from io import BytesIO
 from PIL import Image
-import pillow_heif
 
-# 注册heic/heif格式支持
-pillow_heif.register_heif_opener()
+def batch_convert_replace_original(folder_dir, limit_mb=1):
+    max_byte = limit_mb * 1024 * 1024
+    # 支持的图片后缀
+    support_ext = (".png", ".webp", ".bmp", ".tiff", ".jpeg", ".heic", ".jpg")
 
-def convert_cover_original(folder_path, max_size_mb=10):
-    supported_formats = (
-        '.png', '.jpg', '.jpeg', '.bmp', '.gif',
-        '.tiff', '.webp', '.heic', '.heif'
-    )
-    max_size_bytes = max_size_mb * 1024 * 1024
-    init_quality = 95
+    if not os.path.isdir(folder_dir):
+        print(f"\n错误：文件夹不存在，请检查路径：{folder_dir}")
+        return
 
-    for filename in os.listdir(folder_path):
-        file_path = os.path.join(folder_path, filename)
-        if os.path.isdir(file_path):
+    total = 0
+    success = 0
+    fail = 0
+
+    for file_name in os.listdir(folder_dir):
+        file_full_path = os.path.join(folder_dir, file_name)
+        # 跳过子文件夹
+        if os.path.isdir(file_full_path):
             continue
 
-        suffix = os.path.splitext(filename)[1].lower()
-        if suffix not in supported_formats:
+        file_stem, ext = os.path.splitext(file_name)
+        ext_lower = ext.lower()
+        if ext_lower not in support_ext:
             continue
 
-        print(f"\n正在处理：{filename}")
-        try:
-            with Image.open(file_path) as img:
-                # 透明通道转白底
-                if img.mode in ("RGBA", "P", "LA"):
-                    img = img.convert("RGB")
+        total += 1
+        out_file_name = f"{file_stem}.jpg"
+        out_full_path = os.path.join(folder_dir, out_file_name)
 
-                # 统一后缀为 .jpg，文件名不变
-                name_only = os.path.splitext(filename)[0]
-                new_path = os.path.join(folder_path, name_only + ".jpg")
-
-                current_quality = init_quality
-                # 循环压缩到10M以内
-                while current_quality >= 10:
-                    img.save(new_path, "JPEG", quality=current_quality, optimize=True)
-                    if os.path.getsize(new_path) <= max_size_bytes:
+        # 跳过自身，防止重复处理
+        if file_full_path == out_full_path:
+            try:
+                # 原图是jpg，直接压缩
+                img = Image.open(file_full_path).convert("RGB")
+                quality = 95
+                step = 5
+                while True:
+                    buf = BytesIO()
+                    img.save(buf, format="JPEG", quality=quality, optimize=True)
+                    size = buf.tell()
+                    if size <= max_byte or quality <= 10:
                         break
-                    current_quality -= 8
+                    quality -= step
+                img.save(out_full_path, format="JPEG", quality=quality, optimize=True)
+                kb = round(size / 1024, 2)
+                print(f"压缩 | {file_name} | 画质:{quality} | {kb}KB")
+                success += 1
+                continue
+            except Exception as e:
+                print(f"失败 | {file_name} 错误：{str(e)}")
+                fail += 1
+                continue
 
-                # 如果原文件不是jpg，删除旧图实现覆盖替换
-                if suffix != ".jpg":
-                    os.remove(file_path)
+        try:
+            # 打开图片转RGB
+            img = Image.open(file_full_path).convert("RGB")
+            quality = 95
+            step = 5
 
-                print(f"✅ 已覆盖替换：{name_only}.jpg")
+            # 循环降低画质至1MB以内
+            while True:
+                buf = BytesIO()
+                img.save(buf, format="JPEG", quality=quality, optimize=True)
+                size = buf.tell()
+                if size <= max_byte or quality <= 10:
+                    break
+                quality -= step
 
+            # 保存新jpg
+            img.save(out_full_path, format="JPEG", quality=quality, optimize=True)
+            # 删除原始文件，实现替换
+            os.remove(file_full_path)
+            kb = round(size / 1024, 2)
+            print(f"替换 | {file_name} → {out_file_name} | 画质:{quality} | {kb}KB")
+            success += 1
         except Exception as e:
-            print(f"❌ 处理失败 {filename}：{str(e)}")
+            print(f"失败 | {file_name} 错误：{str(e)}")
+            fail += 1
+
+    print(f"\n===== 处理完成 =====")
+    print(f"总计图片：{total} 张")
+    print(f"处理成功：{success} 张")
+    print(f"处理失败：{fail} 张")
+
 
 if __name__ == "__main__":
-    print("=" * 50)
-    folder = input("请输入图片文件夹完整路径：").strip()
-    print("=" * 50)
-
-    if not os.path.isdir(folder):
-        print("❌ 路径不存在，请检查！")
-    else:
-        convert_cover_original(folder, max_size_mb=10)
-        print("\n🎉 全部处理完成！")
+    print("===== 图片批量转JPG并压缩至1M内（直接替换原文件） =====")
+    print("警告：转换后会删除原始图片文件！请提前备份重要图片！\n")
+    folder_path = input("请输入图片文件夹完整路径：").strip()
+    batch_convert_replace_original(folder_path, limit_mb=1)
+    input("\n按回车键退出程序...")
